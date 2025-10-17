@@ -91,7 +91,7 @@
         <section id="soil" class="mb-16 bg-white p-8 rounded-xl shadow-2xl">
             <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">Essential Soil Conservation Techniques</h3>
             <p class="text-lg text-gray-600 mb-8">
-                Protecting the soil is key to sustainable plantation and agriculture. Here are three critical methods:
+                Protecting the soil is key to sustainable plantation and agriculture. Here are four critical methods:
             </p>
 
             <div class="space-y-10">
@@ -130,6 +130,19 @@
                         <h4 class="text-2xl font-semibold text-green-800 mb-2">3. Crop Rotation and Intercropping</h4>
                         <p class="text-gray-700">
                             **Rotation** means planting different crops sequentially on the same land. **Intercropping** means growing two or more crops simultaneously in the same field. **Benefits:** This prevents nutrient depletion, especially when leguminous plants are rotated, and helps control pests and diseases naturally, reducing the need for harsh chemicals.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Technique 4: Shelterbelts and Windbreaks (NEW) -->
+                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
+                    <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
+                        <i data-lucide="wind" class="w-10 h-10 text-orange-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-semibold text-green-800 mb-2">4. Shelterbelts and Windbreaks</h4>
+                        <p class="text-gray-700">
+                            These are rows of trees or shrubs planted along the edges of fields. **Shelterbelts** are wider bands used for protecting fields and farmsteads, while **windbreaks** are narrower. **Benefits:** They significantly reduce wind velocity, which in turn minimizes wind erosion of topsoil and helps conserve soil moisture by reducing evaporation. They also provide habitat for beneficial wildlife.
                         </p>
                     </div>
                 </div>
@@ -185,20 +198,22 @@
 
         // --- Plant Data Population ---
         const indianPlants = [
-            { name: "Neem", scientific: "Azadirachta indica", uses: "Medicinal, natural pesticide, shade.", icon: "leaf" },
-            { name: "Banyan", scientific: "Ficus benghalensis", uses: "Cultural significance, massive canopy, aerial roots.", icon: "tree-pine" },
-            { name: "Tulsi", scientific: "Ocimum tenuiflorum", uses: "Holy Basil, immune booster, air purifier.", icon: "flask-conical" },
-            { name: "Peepal", scientific: "Ficus religiosa", uses: "High oxygen producer, sacred, dense shade.", icon: "sun" },
-            { name: "Ashoka", scientific: "Saraca asoca", uses: "Ornamental, air purification, traditional medicine.", icon: "flower-2" },
-            { name: "Mango", scientific: "Mangifera indica", uses: "National fruit, source of livelihood, rich shade.", icon: "apple" },
-            { name: "Sandalwood", scientific: "Santalum album", uses: "Aromatic wood, oils, high economic value.", icon: "sparkle" },
-            { name: "Drumstick", scientific: "Moringa oleifera", uses: "Superfood, fast-growing, highly nutritious leaves.", icon: "salad" },
-            { name: "Curry Leaf", scientific: "Murraya koenigii", uses: "Culinary herb, rich in flavor and antioxidants.", icon: "utensils" },
-            { name: "Jamun", scientific: "Syzygium cumini", uses: "Fruit used in traditional medicine for diabetes.", icon: "droplets" }
+            { name: "Neem", scientific: "Azadirachta indica", uses: "Highly valued for its **medicinal properties**; acts as a natural **pesticide and fungicide**, promoting ecological balance without harsh chemicals. Provides excellent shade.", icon: "leaf" },
+            { name: "Banyan", scientific: "Ficus benghalensis", uses: "A national tree of India, known for its massive canopy and spreading aerial roots that **stabilize large areas of soil**. Holds deep cultural and spiritual significance.", icon: "tree-pine" },
+            { name: "Tulsi", scientific: "Ocimum tenuiflorum", uses: "Revered as **Holy Basil**, it's known to boost immunity and is a potent **air purifier**. Its leaves are widely used in herbal remedies and teas.", icon: "flask-conical" },
+            { name: "Peepal", scientific: "Ficus religiosa", uses: "Releases significant oxygen even at night (though minimally), offers **dense, cool shade**, and is considered a sacred symbol in several religions.", icon: "sun" },
+            { name: "Ashoka", scientific: "Saraca asoca", uses: "Popularly planted for its beautiful **ornamental flowers** and dense foliage, contributing to **noise reduction and local air quality**. Used in traditional medicine.", icon: "flower-2" },
+            { name: "Mango", scientific: "Mangifera indica", uses: "India's national fruit. The dense, deep root system **prevents soil erosion** and provides an essential **source of livelihood** and nutrition for millions.", icon: "apple" },
+            { name: "Sandalwood", scientific: "Santalum album", uses: "Highly valuable for its aromatic heartwood and essential oils. It is a **parasitic plant** that helps the ecosystem by tapping nutrients from surrounding host trees.", icon: "sparkle" },
+            { name: "Drumstick", scientific: "Moringa oleifera", uses: "Often called the **'Miracle Tree'**; it's extremely fast-growing and every part (leaves, pods, flowers) is a **superfood** packed with vitamins and minerals.", icon: "salad" },
+            { name: "Curry Leaf", scientific: "Murraya koenigii", uses: "An indispensable **culinary herb** that adds flavor and aroma. Rich in antioxidants, its roots also help **bind soil in home gardens** and small plots.", icon: "utensils" },
+            { name: "Jamun", scientific: "Syzygium cumini", uses: "The fruit is used in Ayurvedic medicine, particularly for managing diabetes. The tree is known for its **robust adaptation** to various soil types and provides valuable shade.", icon: "droplets" }
         ];
 
         function populatePlants() {
             const grid = document.getElementById('plant-grid');
+            // Clear existing content to prevent duplicates if called multiple times
+            grid.innerHTML = ''; 
             indianPlants.forEach(plant => {
                 const card = `
                     <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 card">
@@ -395,7 +410,7 @@
                     let sources = [];
                     const groundingMetadata = candidate.groundingMetadata;
 
-                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                    if (groundingMetadata && groundingAttributions.groundingAttributions) {
                         sources = groundingMetadata.groundingAttributions
                             .map(attribution => ({
                                 uri: attribution.web?.uri,
