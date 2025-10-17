@@ -269,6 +269,16 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
 
+        // Function to get the API Key safely
+        function getApiKey() {
+            // Check for the API key set by the Canvas environment
+            if (typeof __API_KEY__ !== 'undefined' && __API_KEY__) {
+                return __API_KEY__;
+            }
+            // Fallback for environment where global variables are not defined (like local VS Code)
+            return ""; 
+        }
+
         // Enable button after initial load
         setTimeout(() => sendButton.disabled = false, 1000);
 
@@ -345,16 +355,22 @@
         async function fetchWithRetry(url, options, maxRetries = 5) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
+                    // Start fetch
                     const response = await fetch(url, options);
+                    
+                    // Check for network failure before status codes
                     if (!response.ok) {
-                        // Throw error to trigger retry logic for server errors
+                        // Throw error to trigger retry logic for server errors (4xx, 5xx)
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return response;
                 } catch (error) {
-                    console.error(`Attempt ${i + 1} failed:`, error);
-                    if (i === maxRetries - 1) throw error; // Re-throw on last attempt
-                    const delay = Math.pow(2, i) * 1000; // Exponential backoff
+                    // Log error but don't log retries to avoid console spam
+                    if (i === maxRetries - 1) {
+                         // Throw error on last attempt
+                         throw error;
+                    }
+                    const delay = Math.pow(2, i) * 1000; // Exponential backoff: 1s, 2s, 4s, ...
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
             }
@@ -365,6 +381,18 @@
             if (!query) return;
 
             const lowerQuery = query.toLowerCase();
+
+            // Check for API Key availability first
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                // If the key is not available, we can't make the call.
+                addMessage(query, true);
+                removeLoading();
+                addMessage("I am currently unable to connect to the external AI service due to a missing authentication key. Please ensure the environment key is correctly configured.", false);
+                console.error("Gemini API call blocked: API Key not found in the environment.");
+                sendButton.disabled = false;
+                return;
+            }
 
             // 1. Hardcoded response check for "who made you"
             if (lowerQuery.includes('who made you') || lowerQuery.includes('your creator') || lowerQuery.includes('who is your developer') || lowerQuery.includes('who built you')) {
@@ -390,7 +418,7 @@
             showLoading();
 
             try {
-                const apiKey = ""; // Canvas will provide this if needed
+                // Use the API key retrieved from the environment function
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const systemPrompt = "You are 'Canopy Bot,' a helpful and knowledgeable expert on Indian plants, tree plantation, and soil conservation techniques, specifically for the 'Canopy Care' community project. Provide friendly, concise, and scientifically accurate answers. If the information is current or requires real-time knowledge, use Google Search. Format your key points using bold text (**).";
@@ -403,10 +431,11 @@
                     },
                 };
 
-                // REVISED FETCH OPTIONS: Removing redundant headers for local testing robustness
                 const response = await fetchWithRetry(apiUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json' 
+                    },
                     body: JSON.stringify(payload)
                 });
 
