@@ -339,19 +339,6 @@
             // Check for API Key availability first
             const apiKey = getApiKey();
             
-            // This check is now the final, most robust version for Canvas execution.
-            if (!apiKey || apiKey === "AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g") {
-                // If the key is not available, we use the error message.
-                // NOTE: The direct key assignment in getApiKey should ensure this doesn't run on GitHub Pages.
-                // We leave this error block here for safety.
-                addMessage(query, true);
-                removeLoading();
-                addMessage("I am currently unable to connect to the external AI service due to a missing authentication key. Please ensure the key is correctly configured in the code.", false);
-                console.error("Gemini API call blocked: API Key not found in the environment.");
-                sendButton.disabled = false;
-                return;
-            }
-
 
             // 1. Hardcoded response check for "who made you"
             if (lowerQuery.includes('who made you') || lowerQuery.includes('your creator') || lowerQuery.includes('who is your developer') || lowerQuery.includes('who built you')) {
