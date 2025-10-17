@@ -11,10 +11,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         :root {
-            --color-primary: #15803d; /* Emerald 700 */
-            --color-secondary: #f97316; /* Orange 600 */
-            --color-background: #f0fdf4; /* Green 50 */
-            --color-text: #1f2937; /* Gray 800 */
+            /* Branding Colors: Changed to Blue and Amber */
+            --color-primary: #1d4ed8; /* Blue 700 - Primary Action/Accent */
+            --color-secondary: #f59e0b; /* Amber 500 - Complementary Accent */
+            --color-background: #ffffff; /* Clean White - Main Background */
+            --color-text: #111827; /* Gray 900 - Strong Text */
+            --color-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.1), 0 4px 6px -2px rgba(29, 78, 216, 0.05); /* Soft Blue Shadow */
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -29,16 +31,49 @@
             background: #9ca3af;
             border-radius: 3px;
         }
-        /* Style for the button background */
+        /* Global button style */
         .btn-primary {
             background-color: var(--color-primary);
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
         .btn-primary:hover {
-            background-color: #059669; /* Emerald 600 */
+            background-color: #1e40af; /* Darker Blue 800 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
-        .card {
-            border-left: 4px solid var(--color-primary);
+        /* Card style with professional border and hover */
+        .content-card {
+            border-left: 4px solid var(--color-secondary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Hero styling with soft gradient */
+        .hero-section {
+            background-image: linear-gradient(to top, #fcfcfc, #eff6ff); /* Soft gradient from white to pale blue */
+        }
+
+        /* Navigation hover effect */
+        .nav-link {
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--color-primary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>
@@ -47,23 +82,23 @@
     <!-- Main Header -->
     <header class="bg-white shadow-lg sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-extrabold text-green-800 flex items-center">
-                <i data-lucide="leaf" class="w-8 h-8 mr-2 text-green-600"></i>
-                Canopy Care
+            <h1 class="text-3xl font-extrabold text-gray-800 flex items-center">
+                <i data-lucide="leaf" class="w-8 h-8 mr-2 text-blue-600"></i>
+                <span class="text-blue-700">Canopy</span> Care
             </h1>
             <nav>
-                <a href="#plants" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Indian Flora</a>
-                <a href="#soil" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Soil Care</a>
-                <a href="#chatbot" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Canopy Bot</a>
+                <a href="#plants" class="nav-link text-gray-600 hover:text-blue-600 mx-3 font-medium">Indian Flora</a>
+                <a href="#soil" class="nav-link text-gray-600 hover:text-blue-600 mx-3 font-medium">Soil Care</a>
+                <a href="#chatbot" class="nav-link text-gray-600 hover:text-blue-600 mx-3 font-medium">Canopy Bot</a>
             </nav>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="py-20 bg-green-600/10 text-center border-b-8 border-green-700">
+    <section class="py-20 hero-section text-center border-b-4 border-blue-700">
         <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-5xl font-extrabold text-green-900 mb-4 leading-tight">Nurturing Our Land, Growing Our Future</h2>
-            <p class="text-xl text-gray-700 mb-8">
+            <h2 class="text-5xl font-extrabold text-gray-900 mb-4 leading-tight">Nurturing Our Land, Growing Our Future</h2>
+            <p class="text-xl text-gray-600 mb-8">
                 Join the Canopy Care initiative to promote native tree plantation and safeguard our precious soil resources.
             </p>
             <a href="#plants" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition transform hover:scale-105 inline-flex items-center">
@@ -73,14 +108,27 @@
         </div>
     </section>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         <!-- 10 Indian Plants Section -->
-        <section id="plants" class="mb-16">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">10 Pillars of Indian Flora</h3>
-            <p class="text-lg text-gray-600 mb-8">
-                These native species are vital for ecology, culture, and traditional uses across India.
+        <section id="plants" class="mb-20">
+            <h3 class="text-4xl font-extrabold text-blue-700 mb-2">10 Pillars of Indian Flora</h3>
+            <p class="text-lg text-gray-500 mb-6 border-b pb-2 border-yellow-500/50">
+                Discover the ecological and traditional importance of these vital native species.
             </p>
+
+            <!-- Search Tree Section -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                <input type="text" id="plant-search-input" placeholder="Search for a plant name (e.g., Neem, Banyan)..."
+                       class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-sm"
+                       onkeypress="if(event.key === 'Enter') searchPlant()">
+                <button onclick="searchPlant()" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center">
+                    Search
+                    <i data-lucide="search" class="w-5 h-5 ml-2"></i>
+                </button>
+            </div>
+            <!-- Search feedback message -->
+            <div id="search-feedback" class="mb-6 text-sm italic text-red-500"></div>
 
             <div id="plant-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Content will be populated by JS -->
@@ -88,20 +136,20 @@
         </section>
 
         <!-- Soil Conservation Section -->
-        <section id="soil" class="mb-16 bg-white p-8 rounded-xl shadow-2xl">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">Essential Soil Conservation Techniques</h3>
-            <p class="text-lg text-gray-600 mb-8">
-                Protecting the soil is key to sustainable plantation and agriculture. Here are four critical methods:
+        <section id="soil" class="mb-20 bg-white p-10 rounded-xl shadow-2xl">
+            <h3 class="text-4xl font-extrabold text-blue-700 mb-2">Essential Soil Conservation Techniques</h3>
+            <p class="text-lg text-gray-500 mb-10 border-b pb-2 border-yellow-500/50">
+                Four critical methods for protecting and revitalizing our land against erosion and nutrient loss.
             </p>
 
             <div class="space-y-10">
                 <!-- Technique 1: Mulching -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row items-start content-card p-6 bg-gray-50 rounded-lg">
                     <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="layers-3" class="w-10 h-10 text-orange-600"></i>
+                        <i data-lucide="layers-3" class="w-10 h-10 text-yellow-500"></i>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">1. Mulching</h4>
+                        <h4 class="text-2xl font-bold text-blue-800 mb-2">1. Mulching</h4>
                         <p class="text-gray-700">
                             The practice of covering the bare ground between plants with a layer of organic material (like straw, grass, or compost) or inorganic material (like plastic sheets). **Benefits:** It helps retain soil moisture, suppresses weed growth, prevents soil erosion from heavy rain, and regulates soil temperature.
                         </p>
@@ -109,12 +157,12 @@
                 </div>
 
                 <!-- Technique 2: Contour Barriers & Terracing -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row items-start content-card p-6 bg-gray-50 rounded-lg">
                     <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="mountain" class="w-10 h-10 text-orange-600"></i>
+                        <i data-lucide="mountain" class="w-10 h-10 text-yellow-500"></i>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">2. Contour Barriers and Terracing</h4>
+                        <h4 class="text-2xl font-bold text-blue-800 mb-2">2. Contour Barriers and Terracing</h4>
                         <p class="text-gray-700">
                             In hilly areas, barriers of grass, stone, or soil are built along the contours of the land. **Terracing** involves creating level steps on steep slopes. **Benefits:** This method significantly slows down the flow of water, preventing runoff and soil loss, and allowing water to soak into the ground.
                         </p>
@@ -122,25 +170,25 @@
                 </div>
 
                 <!-- Technique 3: Crop Rotation & Intercropping -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row items-start content-card p-6 bg-gray-50 rounded-lg">
                     <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="recycle" class="w-10 h-10 text-orange-600"></i>
+                        <i data-lucide="recycle" class="w-10 h-10 text-yellow-500"></i>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">3. Crop Rotation and Intercropping</h4>
+                        <h4 class="text-2xl font-bold text-blue-800 mb-2">3. Crop Rotation and Intercropping</h4>
                         <p class="text-gray-700">
                             **Rotation** means planting different crops sequentially on the same land. **Intercropping** means growing two or more crops simultaneously in the same field. **Benefits:** This prevents nutrient depletion, especially when leguminous plants are rotated, and helps control pests and diseases naturally, reducing the need for harsh chemicals.
                         </p>
                     </div>
                 </div>
                 
-                <!-- Technique 4: Shelterbelts and Windbreaks (NEW) -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
+                <!-- Technique 4: Shelterbelts and Windbreaks -->
+                <div class="flex flex-col md:flex-row items-start content-card p-6 bg-gray-50 rounded-lg">
                     <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="wind" class="w-10 h-10 text-orange-600"></i>
+                        <i data-lucide="wind" class="w-10 h-10 text-yellow-500"></i>
                     </div>
                     <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">4. Shelterbelts and Windbreaks</h4>
+                        <h4 class="text-2xl font-bold text-blue-800 mb-2">4. Shelterbelts and Windbreaks</h4>
                         <p class="text-gray-700">
                             These are rows of trees or shrubs planted along the edges of fields. **Shelterbelts** are wider bands used for protecting fields and farmsteads, while **windbreaks** are narrower. **Benefits:** They significantly reduce wind velocity, which in turn minimizes wind erosion of topsoil and helps conserve soil moisture by reducing evaporation. They also provide habitat for beneficial wildlife.
                         </p>
@@ -150,18 +198,18 @@
         </section>
 
         <!-- Chatbot Section -->
-        <section id="chatbot" class="mb-16 bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-orange-500">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">Ask Canopy Bot</h3>
-            <p class="text-lg text-gray-600 mb-6">
+        <section id="chatbot" class="mb-16 bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-yellow-500">
+            <h3 class="text-4xl font-extrabold text-blue-700 mb-2">Ask Canopy Bot</h3>
+            <p class="text-lg text-gray-500 mb-6 border-b pb-2 border-yellow-500/50">
                 Need advice on plantation, plant care, or soil health? Our AI assistant, Canopy Bot, is here to help!
             </p>
 
-            <div class="max-w-3xl mx-auto bg-gray-100 rounded-lg shadow-inner flex flex-col h-[500px]">
+            <div class="max-w-3xl mx-auto bg-gray-100 rounded-lg shadow-inner flex flex-col h-[500px] border border-gray-300">
                 <!-- Chat History -->
                 <div id="chat-history" class="flex-grow p-4 overflow-y-auto space-y-4">
                     <!-- Initial Bot Message -->
                     <div class="flex justify-start">
-                        <div class="bg-orange-500 text-white p-3 rounded-2xl rounded-tl-none max-w-[80%] shadow-md">
+                        <div class="bg-yellow-500 text-gray-800 p-3 rounded-2xl rounded-tl-none max-w-[80%] shadow-md">
                             Hello! I'm Canopy Bot, your guide to Indian plants and soil conservation. How can I assist your project today?
                         </div>
                     </div>
@@ -170,7 +218,7 @@
                 <!-- Input Area -->
                 <div class="p-4 border-t border-gray-300 flex">
                     <input type="text" id="user-input" placeholder="Ask a question about trees, soil, or planting..."
-                           class="flex-grow p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:border-green-500 transition"
+                           class="flex-grow p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner"
                            onkeypress="if(event.key === 'Enter') sendMessage()">
                     <button id="send-button" onclick="sendMessage()" class="btn-primary text-white p-3 rounded-r-lg font-semibold flex items-center justify-center disabled:opacity-50" disabled>
                         Send
@@ -183,9 +231,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white p-6 text-center">
+    <footer class="bg-blue-700 text-white p-8 text-center mt-12">
         <div class="max-w-7xl mx-auto">
-            <p>&copy; <span id="current-year"></span> Canopy Care Project. Nurturing Nature Together.</p>
+            <p class="font-medium text-blue-200">Canopy Care Project</p>
+            <p class="text-sm mt-1">&copy; <span id="current-year"></span>. Nurturing Nature Together.</p>
         </div>
     </footer>
 
@@ -215,11 +264,14 @@
             // Clear existing content to prevent duplicates if called multiple times
             grid.innerHTML = ''; 
             indianPlants.forEach(plant => {
+                // Assign a unique ID to each card for scrolling/redirection
+                const plantId = plant.name.toLowerCase().replace(/\s+/g, '-');
+                
                 const card = `
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 card">
+                    <div id="${plantId}" class="bg-white p-6 rounded-xl shadow-lg content-card">
                         <div class="flex items-center mb-4">
-                            <i data-lucide="${plant.icon}" class="w-8 h-8 text-green-700 mr-3"></i>
-                            <h4 class="text-xl font-bold text-green-800">${plant.name}</h4>
+                            <i data-lucide="${plant.icon}" class="w-8 h-8 text-blue-700 mr-3"></i>
+                            <h4 class="text-xl font-bold text-blue-800">${plant.name}</h4>
                         </div>
                         <p class="text-sm text-gray-500 italic mb-2">${plant.scientific}</p>
                         <p class="text-gray-700">${plant.uses}</p>
@@ -228,6 +280,43 @@
                 grid.innerHTML += card;
             });
             lucide.createIcons(); // Re-render icons after adding content
+        }
+
+        // --- New Function: Search and Redirect ---
+        function searchPlant() {
+            const inputElement = document.getElementById('plant-search-input');
+            const feedbackElement = document.getElementById('search-feedback');
+            const query = inputElement.value.trim().toLowerCase();
+            
+            feedbackElement.textContent = ''; // Clear previous message
+            
+            if (!query) {
+                feedbackElement.textContent = "Please enter a plant name to search.";
+                return;
+            }
+
+            const foundPlant = indianPlants.find(plant => 
+                plant.name.toLowerCase().includes(query) || 
+                plant.scientific.toLowerCase().includes(query)
+            );
+
+            if (foundPlant) {
+                const plantId = foundPlant.name.toLowerCase().replace(/\s+/g, '-');
+                const targetElement = document.getElementById(plantId);
+
+                if (targetElement) {
+                    // Smooth scroll to the target card
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Optional: Briefly highlight the found card
+                    targetElement.classList.add('ring-4', 'ring-yellow-500', 'ring-opacity-50');
+                    setTimeout(() => {
+                        targetElement.classList.remove('ring-4', 'ring-yellow-500', 'ring-opacity-50');
+                    }, 2000);
+                }
+            } else {
+                feedbackElement.textContent = `Sorry, "${query}" was not found in our list of 10 featured plants.`;
+            }
         }
 
         window.onload = populatePlants;
@@ -271,8 +360,8 @@
             const bubble = document.createElement('div');
             bubble.className = `p-3 rounded-2xl max-w-[80%] shadow-md text-gray-800 ${
                 isUser 
-                ? 'bg-green-100 rounded-tr-none' 
-                : 'bg-orange-500 text-white rounded-tl-none'
+                ? 'bg-blue-100 rounded-tr-none' 
+                : 'bg-yellow-500 text-gray-800 rounded-tl-none'
             }`;
 
             // Markdown to simple HTML conversion (basic)
@@ -280,12 +369,13 @@
             formattedText = formattedText.replace(/\n/g, '<br>');
 
             bubble.innerHTML = formattedText;
-
+            
+            // --- Custom change for the new theme: adjust link color for readability ---
             if (sources.length > 0 && !isUser) {
                 const sourceList = document.createElement('div');
-                sourceList.className = 'mt-2 pt-2 border-t border-orange-400 text-xs italic';
+                sourceList.className = 'mt-2 pt-2 border-t border-yellow-600 text-xs italic';
                 sourceList.innerHTML = '<strong>Sources:</strong> ' + sources.map((s, i) => 
-                    `<a href="${escapeHtml(s.uri)}" target="_blank" class="text-orange-200 hover:text-orange-100 underline">${i + 1}. ${escapeHtml(s.title)}</a>`
+                    `<a href="${escapeHtml(s.uri)}" target="_blank" class="text-blue-700 hover:text-blue-900 underline">${i + 1}. ${escapeHtml(s.title)}</a>`
                 ).join(' | ');
                 bubble.appendChild(sourceList);
             }
@@ -410,7 +500,7 @@
                     let sources = [];
                     const groundingMetadata = candidate.groundingMetadata;
 
-                    if (groundingMetadata && groundingAttributions.groundingAttributions) {
+                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
                         sources = groundingMetadata.groundingAttributions
                             .map(attribution => ({
                                 uri: attribution.web?.uri,
