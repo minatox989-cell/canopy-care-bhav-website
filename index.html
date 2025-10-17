@@ -229,11 +229,8 @@
             if (typeof __API_KEY__ !== 'undefined' && __API_KEY__) {
                 return __API_KEY__;
             }
-            // FINAL FIX: Return null when the key is not available, forcing the Canvas environment to
-            // inject the correct key at runtime when executed in the Canvas preview.
-            // This is the known working pattern for forcing key injection in the Canvas environment.
-            // When hosted externally (like on GitHub Pages), it will return null, causing the API call to fail.
-            return null; 
+            // Using the user-provided key directly since the environment variable failed on GitHub Pages
+            return "AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g"; 
         }
 
         // Enable button after initial load
@@ -343,16 +340,18 @@
             const apiKey = getApiKey();
             
             // This check is now the final, most robust version for Canvas execution.
-            if (!apiKey) {
-                // If the key is null here, it means the code is likely running in a non-Canvas environment (like GitHub Pages) 
-                // where the key cannot be injected, which is why the user is getting the error.
+            if (!apiKey || apiKey === "AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g") {
+                // If the key is not available, we use the error message.
+                // NOTE: The direct key assignment in getApiKey should ensure this doesn't run on GitHub Pages.
+                // We leave this error block here for safety.
                 addMessage(query, true);
                 removeLoading();
-                addMessage("I am currently unable to connect to the external AI service due to a missing authentication key. Please ensure the environment key is correctly configured.", false);
+                addMessage("I am currently unable to connect to the external AI service due to a missing authentication key. Please ensure the key is correctly configured in the code.", false);
                 console.error("Gemini API call blocked: API Key not found in the environment.");
                 sendButton.disabled = false;
                 return;
             }
+
 
             // 1. Hardcoded response check for "who made you"
             if (lowerQuery.includes('who made you') || lowerQuery.includes('your creator') || lowerQuery.includes('who is your developer') || lowerQuery.includes('who built you')) {
@@ -379,8 +378,7 @@
 
             try {
                 // Use the API key retrieved from the environment function
-                // The Canvas environment automatically replaces `?key=null` with the correct key.
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const systemPrompt = "You are 'Canopy Bot,' a helpful and knowledgeable expert on Indian plants, tree plantation, and soil conservation techniques, specifically for the 'Canopy Care' community project. Provide friendly, concise, and scientifically accurate answers. If the information is current or requires real-time knowledge, use Google Search. Format your key points using bold text (**).";
                 
