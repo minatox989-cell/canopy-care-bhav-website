@@ -44,52 +44,6 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- Firebase SDK Imports (Required Setup) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Global variables provided by the environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let db, auth;
-
-        // Initialize Firebase and Auth
-        if (firebaseConfig) {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-
-            window.db = db;
-            window.auth = auth;
-            window.appId = appId;
-            
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    console.log("Firebase Auth State: Signed in as", user.uid);
-                    window.userId = user.uid;
-                } else {
-                    console.log("Firebase Auth State: No user signed in. Attempting sign-in.");
-                    try {
-                        if (initialAuthToken) {
-                            await signInWithCustomToken(auth, initialAuthToken);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                    } catch (error) {
-                        console.error("Firebase Sign-in Failed:", error);
-                    }
-                }
-            });
-        } else {
-            console.warn("Firebase configuration not available. Data persistence features are disabled.");
-            window.userId = crypto.randomUUID(); // Fallback ID
-        }
-    </script>
-    
     <!-- Main Header -->
     <header class="bg-white shadow-lg sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -278,8 +232,7 @@
             // FINAL FIX: Return null when the key is not available, forcing the Canvas environment to
             // inject the correct key at runtime when executed in the Canvas preview.
             // This is the known working pattern for forcing key injection in the Canvas environment.
-            // When hosted externally (like on GitHub Pages), it will return null, causing the API call to fail, 
-            // but this is the correct structure for the Canvas runtime.
+            // When hosted externally (like on GitHub Pages), it will return null, causing the API call to fail.
             return null; 
         }
 
@@ -427,7 +380,7 @@
             try {
                 // Use the API key retrieved from the environment function
                 // The Canvas environment automatically replaces `?key=null` with the correct key.
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g`;
 
                 const systemPrompt = "You are 'Canopy Bot,' a helpful and knowledgeable expert on Indian plants, tree plantation, and soil conservation techniques, specifically for the 'Canopy Care' community project. Provide friendly, concise, and scientifically accurate answers. If the information is current or requires real-time knowledge, use Google Search. Format your key points using bold text (**).";
                 
