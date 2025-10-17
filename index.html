@@ -1,435 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canopy Care: Tree Plantation & Soil Protection</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        :root {
-            --color-primary: #15803d; /* Emerald 700 */
-            --color-secondary: #f97316; /* Orange 600 */
-            --color-background: #f0fdf4; /* Green 50 */
-            --color-text: #1f2937; /* Gray 800 */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-background);
-            color: var(--color-text);
-        }
-        /* Custom scrollbar for chat history */
-        #chat-history::-webkit-scrollbar {
-            width: 6px;
-        }
-        #chat-history::-webkit-scrollbar-thumb {
-            background: #9ca3af;
-            border-radius: 3px;
-        }
-        /* Style for the button background */
-        .btn-primary {
-            background-color: var(--color-primary);
-            transition: background-color 0.2s;
-        }
-        .btn-primary:hover {
-            background-color: #059669; /* Emerald 600 */
-        }
-        .card {
-            border-left: 4px solid var(--color-primary);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Canopy Bot - All in One</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0fdf4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #15803d;
+    }
+
+    #chat-history {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: #f9fafb;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 12px;
+      max-width: 70%;
+      line-height: 1.4;
+    }
+
+    .user {
+      background-color: #d1fae5;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .bot {
+      background-color: #fcd34d;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    #input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #15803d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #166534;
+    }
+  </style>
 </head>
-<body class="min-h-screen">
+<body>
+  <div class="container">
+    <h1>🌿 Canopy Bot</h1>
+    <div id="chat-history" style="display: flex; flex-direction: column;"></div>
+    <div id="input-area">
+      <input type="text" id="user-input" placeholder="Ask about Indian plants or soil..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-    <!-- Main Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-extrabold text-green-800 flex items-center">
-                <i data-lucide="leaf" class="w-8 h-8 mr-2 text-green-600"></i>
-                Canopy Care
-            </h1>
-            <nav>
-                <a href="#plants" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Indian Flora</a>
-                <a href="#soil" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Soil Care</a>
-                <a href="#chatbot" class="text-gray-600 hover:text-green-700 mx-3 font-medium transition">Canopy Bot</a>
-            </nav>
-        </div>
-    </header>
+  <script>
+    const chatHistory = document.getElementById('chat-history');
+    const input = document.getElementById('user-input');
 
-    <!-- Hero Section -->
-    <section class="py-20 bg-green-600/10 text-center border-b-8 border-green-700">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-5xl font-extrabold text-green-900 mb-4 leading-tight">Nurturing Our Land, Growing Our Future</h2>
-            <p class="text-xl text-gray-700 mb-8">
-                Join the Canopy Care initiative to promote native tree plantation and safeguard our precious soil resources.
-            </p>
-            <a href="#plants" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition transform hover:scale-105 inline-flex items-center">
-                Explore Our Plants
-                <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
-            </a>
-        </div>
-    </section>
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.className = `message ${sender}`;
+      div.innerText = text;
+      chatHistory.appendChild(div);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    async function sendMessage() {
+      const message = input.value.trim();
+      if (!message) return;
 
-        <!-- 10 Indian Plants Section -->
-        <section id="plants" class="mb-16">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">10 Pillars of Indian Flora</h3>
-            <p class="text-lg text-gray-600 mb-8">
-                These native species are vital for ecology, culture, and traditional uses across India.
-            </p>
+      addMessage(message, 'user');
+      input.value = '';
 
-            <div id="plant-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Content will be populated by JS -->
-            </div>
-        </section>
-
-        <!-- Soil Conservation Section -->
-        <section id="soil" class="mb-16 bg-white p-8 rounded-xl shadow-2xl">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">Essential Soil Conservation Techniques</h3>
-            <p class="text-lg text-gray-600 mb-8">
-                Protecting the soil is key to sustainable plantation and agriculture. Here are three critical methods:
-            </p>
-
-            <div class="space-y-10">
-                <!-- Technique 1: Mulching -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
-                    <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="layers-3" class="w-10 h-10 text-orange-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">1. Mulching</h4>
-                        <p class="text-gray-700">
-                            The practice of covering the bare ground between plants with a layer of organic material (like straw, grass, or compost) or inorganic material (like plastic sheets). **Benefits:** It helps retain soil moisture, suppresses weed growth, prevents soil erosion from heavy rain, and regulates soil temperature.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Technique 2: Contour Barriers & Terracing -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
-                    <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="mountain" class="w-10 h-10 text-orange-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">2. Contour Barriers and Terracing</h4>
-                        <p class="text-gray-700">
-                            In hilly areas, barriers of grass, stone, or soil are built along the contours of the land. **Terracing** involves creating level steps on steep slopes. **Benefits:** This method significantly slows down the flow of water, preventing runoff and soil loss, and allowing water to soak into the ground.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Technique 3: Crop Rotation & Intercropping -->
-                <div class="flex flex-col md:flex-row items-start card p-6 bg-gray-50 rounded-lg shadow-md">
-                    <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
-                        <i data-lucide="recycle" class="w-10 h-10 text-orange-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-2xl font-semibold text-green-800 mb-2">3. Crop Rotation and Intercropping</h4>
-                        <p class="text-gray-700">
-                            **Rotation** means planting different crops sequentially on the same land. **Intercropping** means growing two or more crops simultaneously in the same field. **Benefits:** This prevents nutrient depletion, especially when leguminous plants are rotated, and helps control pests and diseases naturally, reducing the need for harsh chemicals.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chatbot Section -->
-        <section id="chatbot" class="mb-16 bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-8 border-orange-500">
-            <h3 class="text-4xl font-bold text-green-700 mb-8 border-b-4 border-orange-500 pb-2">Ask Canopy Bot</h3>
-            <p class="text-lg text-gray-600 mb-6">
-                Need advice on plantation, plant care, or soil health? Our AI assistant, Canopy Bot, is here to help!
-            </p>
-
-            <div class="max-w-3xl mx-auto bg-gray-100 rounded-lg shadow-inner flex flex-col h-[500px]">
-                <!-- Chat History -->
-                <div id="chat-history" class="flex-grow p-4 overflow-y-auto space-y-4">
-                    <!-- Initial Bot Message -->
-                    <div class="flex justify-start">
-                        <div class="bg-orange-500 text-white p-3 rounded-2xl rounded-tl-none max-w-[80%] shadow-md">
-                            Hello! I'm Canopy Bot, your guide to Indian plants and soil conservation. How can I assist your project today?
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Input Area -->
-                <div class="p-4 border-t border-gray-300 flex">
-                    <input type="text" id="user-input" placeholder="Ask a question about trees, soil, or planting..."
-                           class="flex-grow p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:border-green-500 transition"
-                           onkeypress="if(event.key === 'Enter') sendMessage()">
-                    <button id="send-button" onclick="sendMessage()" class="btn-primary text-white p-3 rounded-r-lg font-semibold flex items-center justify-center disabled:opacity-50" disabled>
-                        Send
-                        <i data-lucide="send" class="w-5 h-5 ml-2"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white p-6 text-center">
-        <div class="max-w-7xl mx-auto">
-            <p>&copy; <span id="current-year"></span> Canopy Care Project. Nurturing Nature Together.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript for Content and Chatbot Logic -->
-    <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // --- Plant Data Population ---
-        const indianPlants = [
-            { name: "Neem", scientific: "Azadirachta indica", uses: "Medicinal, natural pesticide, shade.", icon: "leaf" },
-            { name: "Banyan", scientific: "Ficus benghalensis", uses: "Cultural significance, massive canopy, aerial roots.", icon: "tree-pine" },
-            { name: "Tulsi", scientific: "Ocimum tenuiflorum", uses: "Holy Basil, immune booster, air purifier.", icon: "flask-conical" },
-            { name: "Peepal", scientific: "Ficus religiosa", uses: "High oxygen producer, sacred, dense shade.", icon: "sun" },
-            { name: "Ashoka", scientific: "Saraca asoca", uses: "Ornamental, air purification, traditional medicine.", icon: "flower-2" },
-            { name: "Mango", scientific: "Mangifera indica", uses: "National fruit, source of livelihood, rich shade.", icon: "apple" },
-            { name: "Sandalwood", scientific: "Santalum album", uses: "Aromatic wood, oils, high economic value.", icon: "sparkle" },
-            { name: "Drumstick", scientific: "Moringa oleifera", uses: "Superfood, fast-growing, highly nutritious leaves.", icon: "salad" },
-            { name: "Curry Leaf", scientific: "Murraya koenigii", uses: "Culinary herb, rich in flavor and antioxidants.", icon: "utensils" },
-            { name: "Jamun", scientific: "Syzygium cumini", uses: "Fruit used in traditional medicine for diabetes.", icon: "droplets" }
-        ];
-
-        function populatePlants() {
-            const grid = document.getElementById('plant-grid');
-            indianPlants.forEach(plant => {
-                const card = `
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 card">
-                        <div class="flex items-center mb-4">
-                            <i data-lucide="${plant.icon}" class="w-8 h-8 text-green-700 mr-3"></i>
-                            <h4 class="text-xl font-bold text-green-800">${plant.name}</h4>
-                        </div>
-                        <p class="text-sm text-gray-500 italic mb-2">${plant.scientific}</p>
-                        <p class="text-gray-700">${plant.uses}</p>
-                    </div>
-                `;
-                grid.innerHTML += card;
-            });
-            lucide.createIcons(); // Re-render icons after adding content
-        }
-
-        window.onload = populatePlants;
-
-
-        // --- Chatbot API Logic ---
-        const chatHistory = document.getElementById('chat-history');
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
-
-        // Function to get the API Key safely
-        function getApiKey() {
-            // Check for the API key set by the Canvas environment (Expected behavior)
-            if (typeof __API_KEY__ !== 'undefined' && __API_KEY__) {
-                return __API_KEY__;
-            }
-            // Using the user-provided key directly since the environment variable failed on GitHub Pages
-            return "AIzaSyCQuTar_2bLWkRCq6dNRdCgCo4J0Khd41g"; 
-        }
-
-        // Enable button after initial load
-        setTimeout(() => sendButton.disabled = false, 1000);
-
-        // Utility to escape HTML for display
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, (m) => map[m]);
-        }
-
-        // Add message to chat history
-        function addMessage(text, isUser = false, sources = []) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
-
-            const bubble = document.createElement('div');
-            bubble.className = `p-3 rounded-2xl max-w-[80%] shadow-md text-gray-800 ${
-                isUser 
-                ? 'bg-green-100 rounded-tr-none' 
-                : 'bg-orange-500 text-white rounded-tl-none'
-            }`;
-
-            // Markdown to simple HTML conversion (basic)
-            let formattedText = escapeHtml(text).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            formattedText = formattedText.replace(/\n/g, '<br>');
-
-            bubble.innerHTML = formattedText;
-
-            if (sources.length > 0 && !isUser) {
-                const sourceList = document.createElement('div');
-                sourceList.className = 'mt-2 pt-2 border-t border-orange-400 text-xs italic';
-                sourceList.innerHTML = '<strong>Sources:</strong> ' + sources.map((s, i) => 
-                    `<a href="${escapeHtml(s.uri)}" target="_blank" class="text-orange-200 hover:text-orange-100 underline">${i + 1}. ${escapeHtml(s.title)}</a>`
-                ).join(' | ');
-                bubble.appendChild(sourceList);
-            }
-
-            messageDiv.appendChild(bubble);
-            chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        // Show a temporary loading indicator
-        function showLoading() {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-indicator';
-            loadingDiv.className = 'flex justify-start';
-            loadingDiv.innerHTML = `
-                <div class="bg-gray-300 p-3 rounded-2xl rounded-tl-none max-w-[80%] shadow-md">
-                    <div class="flex space-x-1">
-                        <div class="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
-                        <div class="w-2 h-2 bg-gray-600 rounded-full animate-pulse delay-100"></div>
-                        <div class="w-2 h-2 bg-gray-600 rounded-full animate-pulse delay-200"></div>
-                    </div>
-                </div>
-            `;
-            chatHistory.appendChild(loadingDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function removeLoading() {
-            const loading = document.getElementById('loading-indicator');
-            if (loading) {
-                loading.remove();
-            }
-        }
-
-        // API Call Function with Exponential Backoff
-        async function fetchWithRetry(url, options, maxRetries = 5) {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    // Start fetch
-                    const response = await fetch(url, options);
-                    
-                    // Check for network failure before status codes
-                    if (!response.ok) {
-                        // Throw error to trigger retry logic for server errors (4xx, 5xx)
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response;
-                } catch (error) {
-                    // Log error but don't log retries to avoid console spam
-                    if (i === maxRetries - 1) {
-                         // Throw error on last attempt
-                         throw error;
-                    }
-                    const delay = Math.pow(2, i) * 1000; // Exponential backoff: 1s, 2s, 4s, ...
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-
-        async function sendMessage() {
-            const query = userInput.value.trim();
-            if (!query) return;
-
-            const lowerQuery = query.toLowerCase();
-
-            // Check for API Key availability first
-            const apiKey = getApiKey();
-            
-
-            // 1. Hardcoded response check for "who made you"
-            if (lowerQuery.includes('who made you') || lowerQuery.includes('your creator') || lowerQuery.includes('who is your developer') || lowerQuery.includes('who built you')) {
-                 // Display user message first
-                addMessage(query, true);
-                userInput.value = '';
-                sendButton.disabled = true; // Still disable the button during the quick local process
-                
-                // Display custom bot response
-                addMessage("I was made by Bhavesh, designed specifically for the Canopy Care Project!", false);
-                
-                // Re-enable button
-                sendButton.disabled = false;
-                return; // Exit the function to prevent API call
-            }
-
-            // 1. Display user message (for API calls)
-            addMessage(query, true);
-            userInput.value = '';
-            sendButton.disabled = true;
-
-            // 2. Show loading indicator
-            showLoading();
-
-            try {
-                // Use the API key retrieved from the environment function
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-                const systemPrompt = "You are 'Canopy Bot,' a helpful and knowledgeable expert on Indian plants, tree plantation, and soil conservation techniques, specifically for the 'Canopy Care' community project. Provide friendly, concise, and scientifically accurate answers. If the information is current or requires real-time knowledge, use Google Search. Format your key points using bold text (**).";
-                
-                const payload = {
-                    contents: [{ parts: [{ text: query }] }],
-                    tools: [{ "google_search": {} }], // Enable Google Search Grounding
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    },
-                };
-
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                
-                // Process the API response
-                const candidate = result.candidates?.[0];
-
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    const text = candidate.content.parts[0].text;
-                    let sources = [];
-                    const groundingMetadata = candidate.groundingMetadata;
-
-                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                        sources = groundingMetadata.groundingAttributions
-                            .map(attribution => ({
-                                uri: attribution.web?.uri,
-                                title: attribution.web?.title,
-                            }))
-                            .filter(source => source.uri && source.title);
-                    }
-                    
-                    // 3. Display Bot Response
-                    removeLoading();
-                    addMessage(text, false, sources);
-
-                } else {
-                    // Handle cases where response structure is unexpected
-                    removeLoading();
-                    addMessage("Oops! I received an empty or unreadable response. Please try asking again.", false);
-                    console.error("API Error: Unexpected response structure.", result);
-                }
-
-            } catch (error) {
-                // 3. Display Error Message
-                removeLoading();
-                addMessage("I'm sorry, I'm having trouble connecting to my knowledge base right now. Please check your network or try again later.", false);
-                console.error("Gemini API call failed:", error);
-            } finally {
-                sendButton.disabled = false;
-            }
-        }
-        
-        // This is necessary to re-initialize the lucide icons after they are added to the DOM dynamically
-        window.addEventListener('load', () => {
-            lucide.createIcons();
+      try {
+        const response = await fetch('http://localhost:5000/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message })
         });
-    </script>
 
+        const data = await response.json();
+        addMessage(data.reply, 'bot');
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage("⚠️ Error contacting the server. Is it running?", 'bot');
+      }
+    }
+  </script>
 </body>
 </html>
